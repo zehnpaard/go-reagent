@@ -71,6 +71,13 @@
                               (update :queue #(into % sames)))]
             (recur new-data)))))))
 
+(defn remove-stone [game stone]
+  (assoc-in game [:board stone] :empty))
+
+(defn remove-stones [game stones]
+  (reduce remove-stone game stones))
+
+
 
 (defn play-move [game-state move]
   (if-not (= :empty (get-in game-state [:board move]))
