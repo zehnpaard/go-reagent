@@ -9,8 +9,11 @@
 (defn click [coord]
   (swap! game-state #(second (l/play-move % coord))))
 
+(defn pass []
+  (swap! game-state l/pass))
+
 (defn app []
-  [v/Game @game-state click])
+  [v/Game @game-state click pass])
 
 
 (r/render
