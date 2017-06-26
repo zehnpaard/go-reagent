@@ -94,10 +94,10 @@
                (-> move (get-group new-state) :liberties zero?))
         [false
          (-> game-state
-           (assoc :in_atari false)
-           (assoc :attempted_suicide true))]
+           (assoc :in-atari false)
+           (assoc :attempted-suicide true))]
         [true
          (-> new-state
              (remove-stones (->> captured (map :stones) (apply concat)))
-             (assoc :in_atari atari)
-             (assoc :last_move_passed false))]))))
+             (assoc :in-atari atari)
+             (assoc :last-move-passed false))]))))
