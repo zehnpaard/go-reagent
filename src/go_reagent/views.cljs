@@ -34,7 +34,19 @@
            :value "Pass"
            :onClick pass-fn}])
 
+(defn AlertView [game-state]
+  (let [text (cond (:game-over game-state)
+                   "GAME OVER"
+                   (:in-atari game-state)
+                   "ATARI"
+                   (:attempted-suicide game-state)
+                   "SUICIDE!"
+                   :else
+                   "")]
+    [:div {:id "alerts"} text]))
+
 (defn Game [game-state click-fn pass-fn]
   [:div
+   [AlertView game-state]
    [PassView pass-fn]
    [BoardView game-state click-fn]])
