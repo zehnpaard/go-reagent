@@ -32,6 +32,45 @@
       (assoc :last-move-passed true)
       switch-player))
 
+(defn get-adjacent [game-state [i j]]
+  (->> [[i (dec j)]
+        [i (inc j)]
+        [(dec i) j]
+        [(inc i) j]]
+       (filter #(> (first %) -1))
+       (filter #(< (first %) (:size game-state)))
+       (filter #(> (second %) -1))
+       (filter #(< (second %) (:size game-state)))))
+
+(defn get-group [stone game]
+  (let [color (get-in game [:board stone])
+        data  {:visited #{}
+               :visited_list []
+               :queue [stone]
+               :count 0}]
+    (if-not (= color :empty)
+      (loop [d data]
+        (cond 
+          (empty? (:queue d))
+          {:liberties (:count d)
+           :stones (:visited_list d)}
+
+          ((:visited d) (first (:queue d)))
+          (recur (update d :queue rest))
+
+          :else
+          (let [current   (first (:queue d))
+                neighbors (get-adjacent current game)
+                empties   (filter #(= :empty (get-in game [:board %]))
+                                  neighbors)
+                sames     (filter #(= color (get-in game [:board %]))
+                                  neighbors)
+                new-data  (-> d
+                              (update :queue rest)
+                              (update :count #(+ % (count empties)))
+                              (update :queue #(into % sames)))]
+            (recur new-data)))))))
+
 
 (defn play-move [game-state move]
   (if-not (= :empty (get-in game-state [:board move]))
