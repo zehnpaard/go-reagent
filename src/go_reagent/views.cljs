@@ -28,6 +28,13 @@
                         ^{:key coord} (make-intersection coord))]
     (into main-div intersections)))
 
-(defn Game [game-state click-fn]
+(defn PassView [pass-fn]
+  [:input {:id "pass-btn"
+           :type "button"
+           :value "Pass"
+           :onClick pass-fn}])
+
+(defn Game [game-state click-fn pass-fn]
   [:div
+   [PassView pass-fn]
    [BoardView game-state click-fn]])
