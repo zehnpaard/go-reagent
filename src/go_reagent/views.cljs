@@ -15,6 +15,19 @@
            :style style 
            :onClick #(click-fn [row col])}]))
 
-(defn Game []
+(defn BoardView [game-state click-fn]
+  (let [size (:size game-state)
+        style {:width (* size GRID_SIZE)
+               :height (* size GRID_SIZE)}
+        main-div [:div {:id "board"
+                        :style style}]
+        coords (for [x (range size) y (range size)] [x y])
+        make-intersection (fn [coord]
+                            [BoardIntersection coord (get-in game-state [:board coord]) click-fn])
+        intersections (for [coord coords]
+                        ^{:key coord} (make-intersection coord))]
+    (into main-div intersections)))
+
+(defn Game [game-state click-fn]
   [:div
-   [BoardIntersection [2 3] :white (fn [[row col]] (js/alert (str row "," col)))]])
+   [BoardView game-state click-fn]])
