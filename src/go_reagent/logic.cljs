@@ -92,7 +92,7 @@
   (reduce remove-stone game-state coords))
 
 (defn play-move [game-state move]
-  (if-not (= :empty (get-color game-state move))
+  (if-not (is-color game-state :empty move)
     game-state
     (let [color (:current-color game-state)
           new-state (-> game-state
