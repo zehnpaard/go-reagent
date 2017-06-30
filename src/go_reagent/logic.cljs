@@ -93,7 +93,7 @@
 
 (defn play-move [game-state move]
   (if-not (= :empty (get-color game-state move))
-    [false game-state]
+    game-state
     (let [color (:current-color game-state)
           new-state (-> game-state
                         (assoc-in [:board move] color)
@@ -109,12 +109,10 @@
                     (get-group new-state) 
                     (count-liberties new-state) 
                     zero?))
-        [false
-         (-> game-state
-           (assoc :in-atari false)
-           (assoc :attempted-suicide true))]
-        [true
-         (-> new-state
-             (remove-stones (apply concat captured))
-             (assoc :in-atari atari)
-             (assoc :last-move-passed false))]))))
+       (-> game-state
+         (assoc :in-atari false)
+         (assoc :attempted-suicide true))
+       (-> new-state
+           (remove-stones (apply concat captured))
+           (assoc :in-atari atari)
+           (assoc :last-move-passed false))))))
