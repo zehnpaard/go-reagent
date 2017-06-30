@@ -7,7 +7,7 @@
 (def game-state (r/atom (l/new-game-state 9)))
 
 (defn click [coord]
-  (swap! game-state #(second (l/play-move % coord))))
+  (swap! game-state #(l/play-move % coord)))
 
 (defn pass []
   (swap! game-state l/pass))
