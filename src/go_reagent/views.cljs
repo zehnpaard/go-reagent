@@ -22,9 +22,10 @@
         main-div [:div {:id "board"
                         :style style}]
         coords (for [x (range size) y (range size)] [x y])
-        get-color (get-in game-state [:board coord])
+        get-color (fn [coord] (get-in game-state [:board coord])) 
         intersections (for [coord coords]
-                        ^{:key coord} [BoardIntersection coord (get-color coord) click-fn])]
+                        ^{:key coord} [BoardIntersection 
+                             coord (get-color coord) click-fn])]
     (into main-div intersections)))
 
 (defn PassView [pass-fn]
