@@ -4,7 +4,7 @@
     [go-reagent.views :as v]
     [go-reagent.logic :as l]))
 
-(def game-state (r/atom (l/new-game-state 9)))
+(defonce game-state (r/atom (l/new-game-state 9)))
 
 (defn click [coord]
   (swap! game-state #(l/play-move % coord)))
